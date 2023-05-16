@@ -9,6 +9,14 @@ import multer from 'multer';
 import path from 'path'
 import { fileURLToPath } from 'url';
 import {register} from './controller/atuh.js'
+import {createPost} from './controller/posts.js'
+import authRoutes from './routes/auth.js'
+import userRoutes from './routes/users.js'
+import postRoutes from './routes/posts.js'
+import { verifyToken } from './middleware/auth.js';
+import User from './models/User.js';
+import { posts, users } from './data/index.js';
+import Post from './models/Post.js';
 
 /** CONFIGURATIONS */
 
@@ -37,7 +45,14 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 /**ROUTES WITH FILES */
-app.post("/auth/register", upload.single('picture'), register)
+app.post("/auth/register", upload.single('picture'), register);
+app.post('/posts', verifyToken,upload.single('picture'), createPost)
+
+/**ROUTES */
+app.use('/auth', authRoutes)
+app.use('/users', userRoutes)
+app.use('/posts', postRoutes)
+
 
 /**MONGOOSE SETUP */
 const PORT = process.env.PORT ||6001;
@@ -46,6 +61,7 @@ mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology:true
 }).then(()=>{
     app.listen(PORT,()=>console.log(`Server PORT ${PORT}`))
+    
 }).catch(err=>{
     console.log(`${err} did not connect`)
 })
