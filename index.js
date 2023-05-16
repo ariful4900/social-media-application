@@ -45,13 +45,19 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 /**ROUTES WITH FILES */
+app.get('/', (req, res)=>{
+    res.status(200).json({message:"This is health Route"})
+})
 app.post("/auth/register", upload.single('picture'), register);
 app.post('/posts', verifyToken,upload.single('picture'), createPost)
 
 /**ROUTES */
+
 app.use('/auth', authRoutes)
 app.use('/users', userRoutes)
 app.use('/posts', postRoutes)
+
+
 
 
 /**MONGOOSE SETUP */
