@@ -14,6 +14,9 @@ import authRoutes from './routes/auth.js'
 import userRoutes from './routes/users.js'
 import postRoutes from './routes/posts.js'
 import { verifyToken } from './middleware/auth.js';
+import User from './models/User.js';
+import { posts, users } from './data/index.js';
+import Post from './models/Post.js';
 
 /** CONFIGURATIONS */
 
@@ -58,6 +61,7 @@ mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology:true
 }).then(()=>{
     app.listen(PORT,()=>console.log(`Server PORT ${PORT}`))
+    
 }).catch(err=>{
     console.log(`${err} did not connect`)
 })
