@@ -23,7 +23,7 @@ export const register = async (req, res) => {
         lastName,
         email,
         password: passwordHash,
-        picturePath,
+        picturePath: req.file.originalname,
         friends,
         location,
         occupation,
@@ -33,6 +33,9 @@ export const register = async (req, res) => {
 
     const saveduser = await newuser.save();
     res.status(201).json(saveduser)
+  res.json({
+    message:"User is register"
+  })
   } catch (err) {
     res.status(500).json({error: err.message})
   }
